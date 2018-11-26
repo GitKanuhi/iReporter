@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+
+<title>iReporter</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Arial:100,200,300,400" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<link rel="stylesheet" href="css/style3.css">
+<script src="js/app.js"></script>
+</head>
+<body>
+    <div>
+        <nav class="p-1">
+            <div class="container">
+                <div class="header-top">
+                    <h1 class="color:white">iReporter</h1>
+        
+                    <div class="flex header-nav item-center">
+                        <a href="dashboard.html">Records</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="index.html">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="flex">
+            
+            <div class="w-rem bg-grey-lighter justify-center">
+                
+                    <div class="flex-container flex-column h-full mt-4 mb-4">
+                        <div class="card card-lg border-rounded-sm box-shadow-sm">
+                            <form class="flex flex-column" action="#" method="POST">
+                
+                                    <div class="form-control form-input"><p>Title</p>
+                                        <input type="text" name="" placeholder="Enter Title"></div>
+                                        <div class="form-control form-input"><p>Location</p>
+                                            <input type="text" name="" placeholder="Enter Location"></div>
+                                <div class="form-control form-input">
+                                    <form action="/action_page.php">
+                                    <p>Choose Date</p><input type="date" name="date">
+                                      </form></div>
+                                      
+                                <div class="form-control form-input">
+                                    <label for="record_type" class="font-arial">Record Type</label>
+                                    <br>
+                                    <select class="font-arial fs-1" name="record_type" id="record_type">
+                                        <option value="select">select</option>
+                                        <option value="red_flag">Red Flag</option>
+                                        <option value="intervention">Intervention</option>
+                                    </select>
+                                </div>
+                                <div class="form-control form-input">
+                                    <label class="font-arial fs-1" for="description">Description</label>
+                                    <br>
+                                    <textarea class="font-arial fs-1" name="description" id="description" cols="30" rows="10"></textarea>
+                                </div>
+                                <div class="form-control form-input">
+                                    <label for="media" class="font-arial fs-1">Attach File</label>
+                                    <input type="file" accept="image/*,video/*" name="media">
+                                </div>
+                            
+                                <div class="form-control"> 
+                                    <button class="font-arial">Create a New Record</button>
+                            </form>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
