@@ -1,48 +1,55 @@
 import datetime
 from flask import jsonify,request, make_response
 
-incident_list = []
+Redflag_list = []
+users=[]
 
-class IncidentModel:
+class RedflagModel:
+    """Initialize Red-Flag Class"""
 
     def __init__(self):
-        self.incidences = incident_list
+        self.redflags = Redflag_list
         self.status = 'draft'
 
-    def create_incident(self, createdBy, type, location, image, videos,comment):
+    def create_redflag(self, createdBy, recordType, location, image, videos,comment):
+        """Create Red-flag"""
 
-        incidentData= {
-         'incidentId': len(incident_list)+ 1, 
+        redflagData= {
+         'incidentId': len(Redflag_list)+ 1, 
          'createOn': datetime.datetime.now().strftime('%I:%M%p %B %d, %Y'),
          'createdBy': createdBy,
-         'type': type,
+         'recordType': recordType,
          'location': location,
          'status': self.status,
          'image': image,
          'videos': videos,
          'comment': comment
         }
-        self.incidences.append(incidentData)
-        return self.incidences
+        self.redflags.append(redflagData)
+        return self.redflags
 
     def all(self):
-        return self.incidences
+        """Fetch all red-flag records"""
+        return self.redflags
     
     
     def get_specific(self, incidentId):
-        for incident in self.incidences:
-            if incident['incidentId']==int(incidentId):
+        """Fetch a specific red-flag record"""
+        for incident in self.redflags:
+            if incident['incidentId']==incidentId:
                 return {
                     "status":200,
                     "data":incident
                 }
-        return{
+
+        return {
             "status":404,
-            "error": "Incident not Found!"
+            "message": "error, Incident not Found!"
         }
     
     def edit_location(self,incidentId):
-        for incident in self.incidences:
+        """Edit the location of a specific red-flag record"""
+        for incident in self.redflags:
             if incident['incidentId']==int(incidentId):
                 if incident['status']=='draft':
                     incident.update(request.get_json())
@@ -70,7 +77,8 @@ class IncidentModel:
                     }
 
     def edit_comment(self,incidentId):
-        for incident in self.incidences:
+        """Edit the comment/description of a specific red-flag record"""
+        for incident in self.redflags:
             if incident['incidentId']==int(incidentId):
                 if incident['status']=='draft':
                     incident.update(request.get_json())
@@ -98,10 +106,11 @@ class IncidentModel:
                     }
                 
     def delete_incident(self,incidentId):
-        for incident in self.incidences:
+        """Delete a specific red-flag record"""
+        for incident in self.redflags:
             if incident['incidentId']==int(incidentId):
                 if incident['status']=='draft':
-                    self.incidences.remove(incident)
+                    self.redflags.remove(incident)
                     return {
                         'status':204,
                         'data':[{
@@ -124,3 +133,32 @@ class IncidentModel:
                         'status':404,
                         'error': 'incident rejected'
                     }
+
+class UserModel:
+    """class user model"""
+    def __init__(self):
+        """ Initialize the user model class"""
+        self.users = users
+    
+    def all(self):
+        """Returning all users"""
+        return self.users
+    
+    def save(self,data):
+        data['id']= self.__generate_id()
+        self.users.append(data)
+
+    def find(self, id):
+        """Find users"""
+        for user in self.users:
+            if user['id']==id:
+                return user
+            else:
+                return None
+
+    def __generate_id(self):
+        if len(self.users):
+            return self.users[-1]['id'] + 1
+        else:
+            return 1
+    

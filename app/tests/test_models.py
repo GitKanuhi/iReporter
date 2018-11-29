@@ -9,15 +9,32 @@ class TestModels(unittest.TestCase):
         self.app_context=self.app
 
         self.incident={
-            "createdBy":"Edward Kanuhi", 
+            "createdBy":"Edward Kanuhi",
             "type":"interventions", 
             "location":"45E, 23N",
             "image":"picture",
             "videos":"videos",
             "comment":"Pot holes on season road"
             }
-    def test_create_incident(self):
+    
+    def test_create_redflag(self):
         response=self.client.post('/api/v1/red-flags',data=json.dumps(self.incident),content_type='application/json')
         result=json.loads(response.data.decode())
-        self.assertEqual(result['message'],'Successfully created incident report', msg='incident not crated')
+        
+        self.assertEqual(result["message"],"Successfully created incident report", msg="incident not created")
         self.assertEqual(response.status_code,201)
+
+    
+    def test_SpecificRedflag(self):
+        """test get single order endpoint"""
+        response = self.client.get('/api/red-flags/1')
+        self.assertEqual(response.status_code, 404)
+   
+   
+
+ 
+
+   
+
+
+       
