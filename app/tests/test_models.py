@@ -25,13 +25,11 @@ class TestModels(unittest.TestCase):
         self.assertEqual(response.status_code,201)
 
     
-    def test_SpecificRedflag(self):
-        """test get single order endpoint"""
-        response = self.client.get('/api/red-flags/1')
-        self.assertEqual(response.status_code, 404)
-   
-   
 
+    
+    
+if __name__ == "__main__":
+    unittest.main()
  
 
    

@@ -75,7 +75,7 @@ class Delete(Resource):
         except ValueError:
             return {
                 'status': 404,
-                'error':'Please enter a valid Incident ID'
+                'error':'Please enter a valid redflag ID'
             }
         deleteincident=incident.delete_incident(incidentId)
         return deleteincident
