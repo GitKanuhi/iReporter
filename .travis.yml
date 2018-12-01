@@ -11,8 +11,8 @@ script:
  - pytest --cov-report=term-missing --cov=app
 
 after_success:
- - coveralls 
+ - coveralls.
  - codecov --token=Im6bhD79ZFujhndQFTVjOT8D60Zd1caj1
   
 after_success:
- - coveralls
+ - coveralls.
