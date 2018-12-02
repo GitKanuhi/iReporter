@@ -80,7 +80,6 @@ class Delete(Resource):
         deleteincident=incident.delete_incident(int(incidentId))
         return deleteincident
 
-
 class EditComment(Resource):
     def patch(self,incidentId):
         try:
