@@ -2,7 +2,7 @@
 from flask_restful import Api, Resource 
 from flask import jsonify,request, make_response
 from flask_restful.reqparse import RequestParser
-from.models import RedflagModel, UserModel
+from.models import RedflagModel
 
 incident=RedflagModel()
 
@@ -35,6 +35,7 @@ class RedflagsList(Resource):
             }, 201
             
     def get(self):
+        """Get all Redflags"""
         allredflags=incident.all()
         return allredflags
 
@@ -45,15 +46,14 @@ class SpecificRedflag(Resource):
         """GET specific redflag"""
         try:
             int(incidentId)
+            redflag=incident.get_specific(int(incidentId))
+            return redflag
         except ValueError:
             return {
                 'status': 404,
                 'message':'error, Please enter a valid Incident ID'
             }
-        redflag=incident.get_specific(incidentId)
-
-        return redflag
-
+        
 class EditLocation(Resource):
     def patch(self,incidentId):
         """PATCH redflag location"""
@@ -64,7 +64,7 @@ class EditLocation(Resource):
                 'status': 404,
                 'error':'Please enter a valid Incident ID'
             }
-        editlocation=incident.edit_location(incidentId)
+        editlocation=incident.edit_location(int(incidentId))
         return editlocation
 
 class Delete(Resource):
@@ -77,7 +77,7 @@ class Delete(Resource):
                 'status': 404,
                 'error':'Please enter a valid redflag ID'
             }
-        deleteincident=incident.delete_incident(incidentId)
+        deleteincident=incident.delete_incident(int(incidentId))
         return deleteincident
 
 
@@ -90,57 +90,5 @@ class EditComment(Resource):
                 'status': 404,
                 'error':'Please enter a valid Incident ID'
             }
-        editcomment=incident.edit_comment(incidentId)
+        editcomment=incident.edit_comment(int(incidentId))
         return editcomment
-
-class User(Resource):
-    """Class for single user operations"""
-    def __init__(self):
-        self.db = UserModel()
-    
-    def notFound(self):
-        return{
-            'message':'Record not Found!',
-            'status':404
-        }
-    
-    def get(self, user_id):
-        user=self.db.find(user_id)
-
-        if not user:
-            return self.notFound()
-
-        return user, 200
-
-class Users(Resource):
-    """class for users"""
-    def __init__(self):
-        self.db=UserModel()
-
-    def get(self):
-        """GET users"""
-        return{
-            'data':self.db.all(),
-            'status':200
-        }
-
-    def post(self):
-        """create user"""
-        data=request.get_json()
-
-        user={
-
-            'firstname' : data['firstname'],
-            'lastname' : data['lasttname'],
-            'othernames' : data['othernames'],
-            'email' : data['email'],
-            'phoneNumber' : data['phoneNumber'],
-            'username' : data['username'], 
-            'registered' : data['registered'],
-            'isAdmin' : None,
-        }
-
-        self.db.save(user)
-        return{
-            'message':'user is saved successfully!'
-        }, 201

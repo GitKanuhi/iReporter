@@ -2,8 +2,6 @@ import datetime
 from flask import jsonify,request, make_response
 
 Redflag_list = []
-users=[]
-
 class RedflagModel:
     """Initialize Red-Flag Class"""
 
@@ -32,7 +30,6 @@ class RedflagModel:
         """Fetch all red-flag records"""
         return self.redflags
     
-    
     def get_specific(self, incidentId):
         """Fetch a specific red-flag record"""
         for incident in self.redflags:
@@ -44,7 +41,7 @@ class RedflagModel:
 
         return {
             "status":404,
-            "message": "error, Incident not Found!"
+            "message": "error, Redflag not Found!"
         }
     
     def edit_location(self,incidentId):
@@ -104,7 +101,7 @@ class RedflagModel:
                         'status':404,
                         'error': 'incident rejected'
                     }
-                
+
     def delete_incident(self,incidentId):
         """Delete a specific red-flag record"""
         for incident in self.redflags:
@@ -133,32 +130,3 @@ class RedflagModel:
                         'status':404,
                         'error': 'incident rejected'
                     }
-
-class UserModel:
-    """class user model"""
-    def __init__(self):
-        """ Initialize the user model class"""
-        self.users = users
-    
-    def all(self):
-        """Returning all users"""
-        return self.users
-    
-    def save(self,data):
-        data['id']= self.__generate_id()
-        self.users.append(data)
-
-    def find(self, id):
-        """Find users"""
-        for user in self.users:
-            if user['id']==id:
-                return user
-            else:
-                return None
-
-    def __generate_id(self):
-        if len(self.users):
-            return self.users[-1]['id'] + 1
-        else:
-            return 1
-    
