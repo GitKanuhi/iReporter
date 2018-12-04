@@ -21,6 +21,23 @@ The iReporter contains the static pages showing the look-and-feel of the App.
 First clone this Repo to your machine --->
 https://github.com/GitKanuhi/iReporter.git
 
-Then change the directory to the project by:
+Then change the directory to the project by --->
 
 ``` cd iReporter ```
+
+change to the active branch ---> ``` git checkout develop ```
+
+
+Just to make sure all the packages needed to run the project present in your machine, create a virtual enviroment and install the packages there.
+
+        To create a virtual enviroment run --->  virtualenv -p python3 venv
+
+        To activate the enviroment --->  source venv/bin/activate 
+
+The virtual enviroment is now ready, you should install all packages for the project to ensure you have pip installed otherwise then on your terminal run --->  ``` pip install -r requirements.txt ```
+
+**Run**
+
+To test the project on your terminal run --->   ``` export FLASK_APP=run.py ```
+
+then ---> ``` flask run ```
