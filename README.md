@@ -10,7 +10,7 @@ localised solutions that will curb this menace, hence the birth of iReporter. iR
 any/every citizen to bring any form of corruption to the notice of appropriate authorities and the
 general public. Users can also report on things that needs government intervention
 
-**Design**
+**UI Design**
 
 The iReporter contains the static pages showing the look-and-feel of the App.
 [View the Designs Here](https://gitkanuhi.github.io/iReporter/)
