@@ -29,7 +29,7 @@ class TestModels(unittest.TestCase):
 
     def test_get_specific(self):
         response=self.client.get('/api/v1/red-flags/4')
-        #result=json.loads(response.data.decode())
+        #result=json.loads(response.data)
         self.assertEqual(response.status_code, 200)
 
     def test_delete(self):

@@ -36,8 +36,12 @@ class RedflagsList(Resource):
             
     def get(self):
         """Get all Redflags"""
-        allredflags=incident.all()
-        return allredflags
+        resp = incident.view_all()
+        if resp:
+            return make_response(jsonify({
+                "message": "all redflags available",
+                "all incidents": resp
+            }), 200)
 
 class SpecificRedflag(Resource):
     """Specific Redflag endpoints"""
@@ -47,7 +51,7 @@ class SpecificRedflag(Resource):
         try:
             int(incidentId)
             redflag=incident.get_specific(int(incidentId))
-            return redflag
+            return redflag, 200
         except ValueError:
             return {
                 'status': 404,
@@ -65,7 +69,7 @@ class EditLocation(Resource):
                 'error':'Please enter a valid Incident ID'
             }
         editlocation=incident.edit_location(int(incidentId))
-        return editlocation
+        return editlocation, 200
 
 class Delete(Resource):
 
@@ -78,7 +82,7 @@ class Delete(Resource):
                 'error':'Please enter a valid redflag ID'
             }
         deleteincident=incident.delete_incident(int(incidentId))
-        return deleteincident
+        return deleteincident,200
 
 class EditComment(Resource):
     def patch(self,incidentId):
@@ -90,4 +94,4 @@ class EditComment(Resource):
                 'error':'Please enter a valid Incident ID'
             }
         editcomment=incident.edit_comment(int(incidentId))
-        return editcomment
+        return editcomment, 200

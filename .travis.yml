@@ -10,7 +10,7 @@ install:
 script:
  - pytest --cov-report=term-missing --cov=app
  - python -m coverage report -m
+ - coverage run --source app -m pytest
 
 after_success:
  - coveralls.
- - codecov

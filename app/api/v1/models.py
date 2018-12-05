@@ -26,7 +26,7 @@ class RedflagModel:
         self.redflags.append(redflagData)
         return self.redflags
 
-    def all(self):
+    def view_all(self):
         """Fetch all red-flag records"""
         return self.redflags
     
@@ -57,22 +57,7 @@ class RedflagModel:
                             'message':'Updated incident location'
                         }]
                            }
-                elif incident['status']=='under investigation':
-                    return {
-                        'status':404,
-                        'error': 'incident under investigation'
-                    }
-                elif incident['status']=='resolved':
-                    return {
-                        'status':404,
-                        'error': 'incident resolved'
-                    }
-                elif incident['status']=='rejected':
-                    return {
-                        'status':404,
-                        'error': 'incident rejected'
-                    }
-
+                
     def edit_comment(self,incidentId):
         """Edit the comment/description of a specific red-flag record"""
         for incident in self.redflags:
@@ -86,21 +71,6 @@ class RedflagModel:
                             'message':'Updated incident comment'
                         }]
                            }
-                elif incident['status']=='under investigation':
-                    return {
-                        'status':404,
-                        'error': 'incident under investigation'
-                    }
-                elif incident['status']=='resolved':
-                    return {
-                        'status':404,
-                        'error': 'incident resolved'
-                    }
-                elif incident['status']=='rejected':
-                    return {
-                        'status':404,
-                        'error': 'incident rejected'
-                    }
 
     def delete_incident(self,incidentId):
         """Delete a specific red-flag record"""
@@ -115,18 +85,4 @@ class RedflagModel:
                             'message':'red-flag record deleted'
                         }]
                            }
-                elif incident['status']=='under investigation':
-                    return {
-                        'status':404,
-                        'error': 'incident under investigation'
-                    }
-                elif incident['status']=='resolved':
-                    return {
-                        'status':404,
-                        'error': 'incident resolved'
-                    }
-                elif incident['status']=='rejected':
-                    return {
-                        'status':404,
-                        'error': 'incident rejected'
-                    }
+                
