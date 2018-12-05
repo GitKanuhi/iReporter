@@ -65,5 +65,7 @@ then ---> ``` flask run ```
   
   The app can be found at https://fathomless-harbor-93191.herokuapp.com/
   
+  **Travis Link** ------> https://travis-ci.org/GitKanuhi/iReporter
+  
   **Author**
   Edward Kanuhi
