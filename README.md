@@ -48,3 +48,15 @@ The virtual enviroment is now ready, you should install all packages for the pro
 To test the project on your terminal run --->   ``` export FLASK_APP=run.py ```
 
 then ---> ``` flask run ```
+
+
+**Endpoints**
+
+    the endpoints for the API are
+
+        POST    /api/v1/red-flags/       -------> create a redglag record
+        GET    /api/v1/red-flags/        -------> Fetch all redflags records
+        GET   /api/v1/red-flags/<incidentId>`----> Fetch a specific redflag record
+        PATCH  /api/v1/red-flags/<incidentId> ---> Edit comment/location 
+        DELETE  /api/v1/red-flags/<incidentId> ---> Delete a redflag record
+        
