@@ -3,7 +3,6 @@
 <a href="https://codeclimate.com/github/GitKanuhi/iReporter/maintainability"><img src="https://api.codeclimate.com/v1/badges/32b126fff4706fd89cc5/maintainability" /></a>
 
 [![Coverage Status](https://coveralls.io/repos/github/GitKanuhi/iReporter/badge.svg?branch=develop)](https://coveralls.io/github/GitKanuhi/iReporter?branch=develop)
-[![Coverage Status](https://coveralls.io/repos/github/GitKanuhi/iReporter/badge.svg)](https://coveralls.io/github/GitKanuhi/iReporter)
 
 [iReporter](https://gitkanuhi.github.io/iReporter/)
 
@@ -62,6 +61,10 @@ then ---> ``` flask run ```
         GET   /api/v1/red-flags/<incidentId>`----> Fetch a specific redflag record
         PATCH  /api/v1/red-flags/<incidentId> ---> Edit comment/location 
         DELETE  /api/v1/red-flags/<incidentId> ---> Delete a redflag record
+  
+  **Heroku App Access**
+  
+  The app can be found at https://fathomless-harbor-93191.herokuapp.com/
   
   **Author**
   Edward Kanuhi
