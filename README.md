@@ -59,4 +59,6 @@ then ---> ``` flask run ```
         GET   /api/v1/red-flags/<incidentId>`----> Fetch a specific redflag record
         PATCH  /api/v1/red-flags/<incidentId> ---> Edit comment/location 
         DELETE  /api/v1/red-flags/<incidentId> ---> Delete a redflag record
-        
+  
+  **Author**
+  Edward Kanuhi
