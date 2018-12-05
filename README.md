@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/GitKanuhi/iReporter.svg?branch=develop)](https://travis-ci.org/GitKanuhi/iReporter)
 <a href="https://codeclimate.com/github/GitKanuhi/iReporter/maintainability"><img src="https://api.codeclimate.com/v1/badges/32b126fff4706fd89cc5/maintainability" /></a>
 
-[![Coverage Status](https://coveralls.io/repos/github/GitKanuhi/iReporter/badge.svg?branch=master)](https://coveralls.io/github/GitKanuhi/iReporter?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/GitKanuhi/iReporter/badge.svg?branch=develop)](https://coveralls.io/github/GitKanuhi/iReporter?branch=develop)
 
 [iReporter](https://gitkanuhi.github.io/iReporter/)
 
