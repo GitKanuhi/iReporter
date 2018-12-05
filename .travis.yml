@@ -9,8 +9,7 @@ install:
 
 script:
  - pytest --cov-report=term-missing --cov=app
- - python -m coverage report -m
- - coverage run --source app -m pytest
-
+ 
 after_success:
  - coveralls.
+ - codecov --token=k1V5GEC1iF7UuXzKMCnmOVrpWIkoavGcp
