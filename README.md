@@ -15,6 +15,14 @@ general public. Users can also report on things that needs government interventi
 The iReporter contains the static pages showing the look-and-feel of the App.
 [View the Designs Here](https://gitkanuhi.github.io/iReporter/)
 
+### Prerequisites
+What you need to get started:
+    
+    Python 3: https://www.python.org/downloads/
+    Flask: http://flask.pocoo.org/docs/1.0/installation/
+    Flask_restful: https://flask-restful.readthedocs.io/en/latest/installation.html
+    Pytest: https://docs.pytest.org/en/latest/getting-started.html
+
 **To Run the API**
 
 First clone this Repo to your machine --->
