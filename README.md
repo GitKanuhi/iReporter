@@ -3,6 +3,7 @@
 <a href="https://codeclimate.com/github/GitKanuhi/iReporter/maintainability"><img src="https://api.codeclimate.com/v1/badges/32b126fff4706fd89cc5/maintainability" /></a>
 
 [![Coverage Status](https://coveralls.io/repos/github/GitKanuhi/iReporter/badge.svg?branch=develop)](https://coveralls.io/github/GitKanuhi/iReporter?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/GitKanuhi/iReporter/badge.svg)](https://coveralls.io/github/GitKanuhi/iReporter)
 
 [iReporter](https://gitkanuhi.github.io/iReporter/)
 
