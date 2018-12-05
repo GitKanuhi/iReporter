@@ -1,6 +1,6 @@
 
 [![Build Status](https://travis-ci.org/GitKanuhi/iReporter.svg?branch=develop)](https://travis-ci.org/GitKanuhi/iReporter)
-<a href="https://codeclimate.com/github/GitKanuhi/iReporter/test_coverage"><img src="https://api.codeclimate.com/v1/badges/32b126fff4706fd89cc5/test_coverage" /></a>
+<a href="https://codeclimate.com/github/GitKanuhi/iReporter/maintainability"><img src="https://api.codeclimate.com/v1/badges/32b126fff4706fd89cc5/maintainability" /></a><a href="https://codeclimate.com/github/GitKanuhi/iReporter/test_coverage"><img src="https://api.codeclimate.com/v1/badges/32b126fff4706fd89cc5/test_coverage" /></a>
 
 [iReporter](https://gitkanuhi.github.io/iReporter/)
 
@@ -48,3 +48,17 @@ The virtual enviroment is now ready, you should install all packages for the pro
 To test the project on your terminal run --->   ``` export FLASK_APP=run.py ```
 
 then ---> ``` flask run ```
+
+
+**Endpoints**
+
+    the endpoints for the API are
+
+        POST    /api/v1/red-flags/       -------> create a redglag record
+        GET    /api/v1/red-flags/        -------> Fetch all redflags records
+        GET   /api/v1/red-flags/<incidentId>`----> Fetch a specific redflag record
+        PATCH  /api/v1/red-flags/<incidentId> ---> Edit comment/location 
+        DELETE  /api/v1/red-flags/<incidentId> ---> Delete a redflag record
+  
+  **Author**
+  Edward Kanuhi
