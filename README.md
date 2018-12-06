@@ -55,10 +55,11 @@ then ---> ``` flask run ```
 
     the endpoints for the API are
 
-        POST    /api/v1/red-flags/       -------> create a redglag record
+        POST    /api/v1/red-flags/       -------> create a redflag record
         GET    /api/v1/red-flags/        -------> Fetch all redflags records
-        GET   /api/v1/red-flags/<incidentId>`----> Fetch a specific redflag record
-        PATCH  /api/v1/red-flags/<incidentId> ---> Edit comment/location 
+        GET   /api/v1/red-flags/<incidentId> ----> Fetch a specific redflag record
+        PATCH  /api/v1/red-flags/<incidentId>/comment ---> Edit comment
+        PATCH  /api/v1/red-flags/<incidentId>/location ---> Edit location 
         DELETE  /api/v1/red-flags/<incidentId> ---> Delete a redflag record
   
   **Heroku App Access**
