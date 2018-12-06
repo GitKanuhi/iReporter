@@ -5,14 +5,12 @@ from flask_restful.reqparse import RequestParser
 Redflag_list = []
 class RedflagModel:
     """Initialize Red-Flag Class"""
-
     def __init__(self):
         self.redflags = Redflag_list
         self.status = 'draft'
 
     def create_redflag(self, createdBy, recordType, location, image, videos,comment):
         """Create Red-flag"""
-
         redflagData= {
          'incidentId': len(Redflag_list)+ 1, 
          'createOn': datetime.datetime.now().strftime('%I:%M%p %B %d, %Y'),
@@ -28,6 +26,7 @@ class RedflagModel:
         return redflagData
 
     def view_all(self):
+
         """Fetch all red-flag records"""
         return self.redflags
     

@@ -9,6 +9,7 @@ incident=RedflagModel()
 
 class RedflagsList(Resource):
     """Class for Red-Flags endpoints"""
+    
     def __init__(self):
         self.incident_parser=RequestParser()
         self.incident_parser.add_argument('createdBy',type=str,required=True,help='Name is Required')
@@ -29,7 +30,6 @@ class RedflagsList(Resource):
 
     def post(self):
         """Create Red-Flag endpoint"""
-
         data=self.incident_parser.parse_args()
         data = request.get_json()
         createdBy=data['createdBy']
@@ -47,6 +47,12 @@ class RedflagsList(Resource):
                     }, 201  
         return jsonify({"message": self.validate_data(data)}) 
 
+        response=incident.create_redflag(createdBy,recordType,location,image,videos,comment)
+        return {
+            'message': 'Successfully created incident report',
+            'data':response
+            }, 201
+            
     def get(self):
         """Get all Redflags"""
         resp = incident.view_all()
@@ -60,7 +66,6 @@ class RedflagsList(Resource):
 
 class SpecificRedflag(Resource):
     """Specific Redflag endpoints"""
-
     def get(self,incidentId):
         """GET specific redflag"""
         try:
@@ -121,7 +126,6 @@ class EditComment(Resource):
             }
     
 class Delete(Resource):
-
     def delete(self,incidentId):
         try:
             int(incidentId)
