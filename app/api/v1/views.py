@@ -29,9 +29,11 @@ class RedflagsList(Resource):
         videos=data['videos']
         comment=data['comment']
 
-        incident.create_redflag(createdBy,recordType,location,image,videos,comment)
+        response=incident.create_redflag(createdBy,recordType,location,image,videos,comment)
+
         return {
-            'message': 'Successfully created incident report'
+            'message': 'Successfully created incident report',
+            'data':response
             }, 201
             
     def get(self):
@@ -39,6 +41,7 @@ class RedflagsList(Resource):
         resp = incident.view_all()
         if resp:
             return make_response(jsonify({
+                "status":200,
                 "message": "all redflags available",
                 "all incidents": resp
             }), 200)
@@ -56,9 +59,8 @@ class SpecificRedflag(Resource):
         except ValueError:
             return {
                 'status': 404,
-                'message':'error, Please enter a valid Incident ID'
+                "message": "error, Redflag not Found! Please enter a valid Incident ID"
             }
-            return make_response(jsonify({"message": "No redflag found with that ID"}), 200)
         
 class EditLocation(Resource):
     def patch(self,incidentId):
@@ -77,24 +79,23 @@ class EditComment(Resource):
     def patch(self,incidentId):
         try:
             int(incidentId)
+            editcomment=incident.edit_comment(int(incidentId))
+            return editcomment, 200
         except ValueError:
             return {
                 'status': 404,
                 'error':'Please enter a valid Incident ID'
             }
-        editcomment=incident.edit_comment(int(incidentId))
-        return editcomment, 200
-
+    
 class Delete(Resource):
 
     def delete(self,incidentId):
         try:
             int(incidentId)
+            deleteredflag=incident.delete_incident(int(incidentId))
+            return deleteredflag, 200
         except ValueError:
             return {
                 'status': 404,
-                'error':'Please enter a valid redflag ID'
+                'error':'Please enter a valid redflag ID for deletion'
             }
-        deleteincident=incident.delete_incident(int(incidentId))
-        return deleteincident,200
-          

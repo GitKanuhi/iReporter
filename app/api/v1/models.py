@@ -24,7 +24,7 @@ class RedflagModel:
          'comment': comment
         }
         self.redflags.append(redflagData)
-        return self.redflags
+        return redflagData
 
     def view_all(self):
         """Fetch all red-flag records"""
@@ -41,7 +41,7 @@ class RedflagModel:
 
         return {
             "status":404,
-            "message": "error, Redflag not Found!"
+            "message": "error, Redflag not Found! Please enter a valid Incident ID"
         }
     
     def edit_location(self,incidentId):
@@ -52,11 +52,13 @@ class RedflagModel:
                     incident.update(request.get_json())
                     return {
                         'status':200,
-                        'data':[{
-                            'id':incidentId,
-                            'message':'Updated incident location'
-                        }]
+                        'data':incident,
+                        'message':'Updated incident location'
                            }
+        return {
+            "status":404,
+            "message": "error, Please enter a valid Incident ID'!"
+        }
                 
     def edit_comment(self,incidentId):
         """Edit the comment/description of a specific red-flag record"""
@@ -66,11 +68,13 @@ class RedflagModel:
                     incident.update(request.get_json())
                     return {
                         'status':200,
-                        'data':[{
-                            'id':incidentId,
-                            'message':'Updated incident comment'
-                        }]
+                        'data':incident,
+                        'message':'Updated incident comment'
                            }
+        return {
+            "status":404,
+            "message": "error, Please enter a valid Incident ID'!"
+        }
 
     def delete_incident(self,incidentId):
         """Delete a specific red-flag record"""
@@ -79,10 +83,10 @@ class RedflagModel:
                 if incident['status']=='draft':
                     self.redflags.remove(incident)
                     return {
-                        'status':204,
-                        'data':[{
-                            'id':incidentId,
-                            'message':'red-flag record deleted'
-                        }]
+                        'status':200,
+                        'message': 'Successfully deleted, record does not exist'
                            }
-                
+        return {
+            "status":404,
+            "message": "error, Please enter a valid Incident ID for deletion'!"
+        }
