@@ -1,5 +1,6 @@
 import datetime
 from flask import jsonify,request, make_response
+from flask_restful.reqparse import RequestParser
 
 Redflag_list = []
 class RedflagModel:
@@ -60,12 +61,12 @@ class RedflagModel:
             "message": "error, Please enter a valid Incident ID'!"
         }
                 
-    def edit_comment(self,incidentId):
+    def edit_comment(self,incidentId, data):
         """Edit the comment/description of a specific red-flag record"""
         for incident in self.redflags:
             if incident['incidentId']==int(incidentId):
                 if incident['status']=='draft':
-                    incident.update(request.get_json())
+                    incident.update(data)
                     return {
                         'status':200,
                         'data':incident,
@@ -90,3 +91,5 @@ class RedflagModel:
             "status":404,
             "message": "error, Please enter a valid Incident ID for deletion'!"
         }
+
+    
