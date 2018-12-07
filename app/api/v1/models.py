@@ -2,16 +2,25 @@ import datetime
 from flask import jsonify,request, make_response
 from flask_restful.reqparse import RequestParser
 
+"""contains models and their methods"""
+
 Redflag_list = []
+
+"""empty list for incidents"""
+
 class RedflagModel:
-    """Initialize Red-Flag Class"""
+    """class to handle redflag models"""
 
     def __init__(self):
+
+        """Initialize redflag Class"""
+
         self.redflags = Redflag_list
         self.status = 'draft'
 
     def create_redflag(self, createdBy, recordType, location, image, videos,comment):
-        """Create Red-flag"""
+        """Method for creating Red-flag"""
+        """strftime function is used to format the output of a date in python"""
 
         redflagData= {
          'incidentId': len(Redflag_list)+ 1, 
@@ -28,11 +37,11 @@ class RedflagModel:
         return redflagData
 
     def view_all(self):
-        """Fetch all red-flag records"""
+        """method for fetching all red-flag records"""
         return self.redflags
     
     def get_specific(self, incidentId):
-        """Fetch a specific red-flag record"""
+        """method for fetching a specific red-flag record"""
         for incident in self.redflags:
             if incident['incidentId']==incidentId:
                 return {
@@ -46,7 +55,7 @@ class RedflagModel:
         }
     
     def edit_location(self,incidentId):
-        """Edit the location of a specific red-flag record"""
+        """method for editing the location of a specific red-flag record"""
         for incident in self.redflags:
             if incident['incidentId']==int(incidentId):
                 if incident['status']=='draft':
@@ -62,7 +71,7 @@ class RedflagModel:
         }
                 
     def edit_comment(self,incidentId, data):
-        """Edit the comment/description of a specific red-flag record"""
+        """method for editing the comment/description of a specific red-flag record"""
         for incident in self.redflags:
             if incident['incidentId']==int(incidentId):
                 if incident['status']=='draft':
@@ -78,7 +87,7 @@ class RedflagModel:
         }
 
     def delete_incident(self,incidentId):
-        """Delete a specific red-flag record"""
+        """method for deleting a specific red-flag record"""
         for incident in self.redflags:
             if incident['incidentId']==int(incidentId):
                 if incident['status']=='draft':
