@@ -90,6 +90,7 @@ class EditComment(Resource):
 class Delete(Resource):
 
     def delete(self,incidentId):
+        
         try:
             int(incidentId)
             deleteredflag=incident.delete_incident(int(incidentId))
