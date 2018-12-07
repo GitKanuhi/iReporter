@@ -19,6 +19,7 @@ class RedflagModel:
         self.status = 'draft'
 
     def create_redflag(self, createdBy, recordType, location, image, videos,comment):
+
         """Method for creating Red-flag"""
         """strftime function is used to format the output of a date in python"""
 
@@ -37,7 +38,9 @@ class RedflagModel:
         return redflagData
 
     def view_all(self):
+        
         """method for fetching all red-flag records"""
+
         return self.redflags
     
     def get_specific(self, incidentId):
