@@ -134,9 +134,8 @@ class EditComment(Resource):
             }
     
 class Delete(Resource):
-""" class handling deletion of a redflag by incidentID"""
+    """ class handling deletion of a redflag by incidentID"""
     def delete(self,incidentId):
-        
         try:
             int(incidentId)
             deleteredflag=incident.delete_incident(int(incidentId))
