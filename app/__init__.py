@@ -1,4 +1,8 @@
 from flask import Flask, Blueprint
+""" flask is our framework"""
+""" Flask is the python class type"""
+""" creating instances of our web app"""
+""" blueprint defines a collection of views, templates, and static files that can be applied to an application"""
 
 
 from .api.v1 import version1 as v1

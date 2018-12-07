@@ -38,14 +38,20 @@ class TestModels(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_edit_comment(self):
-        response=self.client.patch('/api/v1/red-flags/4/comment')
+        response=self.client.patch('/api/v1/red-flags/4/comment',data=json.dumps(self.incident),content_type='application/json')
         #result=json.loads(response.data.decode())
         self.assertEqual(response.status_code, 200)
 
     def test_edit_location(self):
-        response=self.client.patch('/api/v1/red-flags/4/location')
+        response=self.client.patch('/api/v1/red-flags/4/location',data=json.dumps(self.incident),content_type='application/json')
         #result=json.loads(response.data.decode())
-        self.assertEqual(response.status_code, 200)    
+        self.assertEqual(response.status_code, 200)   
+
+    def test_validate_data_empty(self):
+        response=self.client.post('/api/v1/red-flags',data=json.dumps(self.incident),content_type='application/json')
+        #result=json.loads(response.data.decode())
+        self.assertEqual(response.status_code,201)
+
 if __name__ == "__main__":
     unittest.main()
  
