@@ -28,8 +28,7 @@ class RedflagsList(Resource):
             return "Comment should not be empty"
         elif len(data['location'].strip()) < 1:
             return "Location can not be empty!" 
-        elif not re.match('\d.*[A-Z]|[A-Z].*\d', data['location'].strip()):
-            """checks for a match only at the beginning of the string"""
+        elif not re.match('(\d+[e,E,w,W]),(\d+[n,N,s,S])', data['location'].strip()):
             return "location should contain capital letter and a digit"
         return 'valid'
 

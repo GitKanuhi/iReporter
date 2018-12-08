@@ -49,7 +49,8 @@ class RedflagModel:
             if incident['incidentId']==incidentId:
                 return {
                     "status":200,
-                    "data":incident
+                    "data":incident,
+                    "message": "Incident fetched successfully!"
                 }
 
         return {
