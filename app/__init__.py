@@ -4,7 +4,6 @@ from flask import Flask, Blueprint
 """ creating instances of our web app"""
 """ blueprint defines a collection of views, templates, and static files that can be applied to an application"""
 
-
 from .api.v1 import version1 as v1
 from .api.v2 import version2 as v2
 from flask_jwt_extended import JWTManager

@@ -20,7 +20,6 @@ class UserRegistration(Resource):
         firstname = data["firstname"]
         lastname = data['lastname']
         phonenumber = data["phonenumber"]
-        # createdOn = datetime.datetime.now().strftime("%I:%M%p %B %d, %Y")
         password = data["password"]
         repeat_password = data["repeat_password"]
 
