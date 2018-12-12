@@ -2,7 +2,6 @@
 from app import create_app
 
 app = create_app()
-app.config['JWT_SECRET_KEY'] = 'wsedrftgrdesdrftgfrdeftgtfrdtfg'
 
 """calls the create_app() method"""
 
