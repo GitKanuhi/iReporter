@@ -50,7 +50,7 @@ def tables():
         status VARCHAR(255) NOT NULL,
         comment VARCHAR(255) NOT NULL
         )"""
-
-        queries = [db1,db2]
-        return queries
+        
+    queries = [db1,db2]
+    return queries
 
