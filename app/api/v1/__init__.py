@@ -13,3 +13,4 @@ api.add_resource(SpecificRedflag, '/red-flags/<incidentId>',strict_slashes=False
 api.add_resource(EditComment, '/red-flags/<incidentId>/comment',strict_slashes=False)
 api.add_resource(EditLocation, '/red-flags/<incidentId>/location',strict_slashes=False)
 api.add_resource(Delete, '/red-flags/<incidentId>/',strict_slashes=False)
+
