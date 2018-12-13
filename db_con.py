@@ -41,7 +41,7 @@ def tables():
         isAdmin BOOLEAN NOT NULL
         )"""
     
-    db2 = """CREATE TABLE IF NOT EXISTS incidents (
+    db2 = """CREATE TABLE IF NOT EXISTS incidences (
         id SERIAL PRIMARY KEY,
         createdOn timestamp with time zone DEFAULT('now'::text)::date NOT NULL,,
         createdBy VARCHAR(255) NOT NULL,
