@@ -1,5 +1,6 @@
 import os
 import psycopg2
+from psycopg2.extras import RealDictCursor
 
 url="dbname='ireporter' host='localhost' port='5432' user='andela' password='pass123'"
 
@@ -16,20 +17,15 @@ def init_db():
 def create_tables():
     """ function to create tables """
     conn = connection(url)
-    curr = conn.cursor() # creating my cursor
-    queries = tables()  # calling tables
+    curr = conn.cursor(cursor_factory=RealDictCursor)
+    queries = tables()
 
     for query in queries:
         curr.execute(query)
     conn.commit()
 
-def destroy_tables():
-    db1 = """DROP TABLE IF EXISTS users CASCADE"""
-    db2 = """DROP TABLE IF EXISTS incidents CASCADE"""
-    pass
-
 def tables():
-    db1 = """CREATE TABLE IF NOT EXISTS users (
+    users = """CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         firstname VARCHAR(255) NOT NULL,
         lastname VARCHAR(255) NOT NULL,
@@ -41,16 +37,20 @@ def tables():
         isAdmin BOOLEAN NOT NULL
         )"""
     
-    db2 = """CREATE TABLE IF NOT EXISTS incidences (
+    incidences = """CREATE TABLE IF NOT EXISTS incidences (
         id SERIAL PRIMARY KEY,
-        createdOn timestamp with time zone DEFAULT('now'::text)::date NOT NULL,,
-        createdBy VARCHAR(255) NOT NULL,
+        createdOn timestamp with time zone DEFAULT('now'::text)::date NOT NULL,
+        createdBy integer NOT NULL references users (id),
         type VARCHAR(255) NOT NULL,
         location VARCHAR(255) NOT NULL,
         status VARCHAR(255) NOT NULL,
         comment VARCHAR(255) NOT NULL
         )"""
         
-    queries = [db1,db2]
+    queries = [users,incidences]
     return queries
 
+def destroy_tables():
+    users = """DROP TABLE IF EXISTS users CASCADE"""
+    incidences = """DROP TABLE IF EXISTS incidents CASCADE"""
+    pass

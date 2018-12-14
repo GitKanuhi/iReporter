@@ -1,6 +1,5 @@
 
 from app.api.v1.views import RedflagsList, SpecificRedflag, EditComment, EditLocation, Delete
-
 from flask_restful import Api, Resource
 from flask import Blueprint
 

@@ -4,6 +4,7 @@ from flask_jwt_extended import get_jwt_identity, create_access_token
 from flask_restful import request
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
+import re
 
 class UserModel():
 
@@ -60,27 +61,30 @@ class UserModel():
     
     def validate_password(self, username, password):
         self.password = self.get_password(username)
-        success = check_password_hash(password, self.password)
+        success = check_password_hash(self.password, password)
         return success
 
     def get_password(self, username):
-        self.curr.execute("""SELECT password FROM users WHERE username = %s""", (username,))
-        pword = self.curr.fetchone()
+        self.curr.execute("""SELECT * FROM users WHERE username = %s""", (username,))
+        pword = self.curr.fetchall()
         if pword:
-            return pword
+            password = pword[0]['password']
+            return password
         else:
             return None
     
     def get_user(self, username):
         self.curr.execute("""SELECT * FROM users WHERE username = %s""", (username,))
-        user = self.curr.fetchone()
-        if user:
-            return user
-        else:
-            return None
-    
+        user = self.curr.fetchall()
+        return user
+        
+    def get_usr_id(self, username):
+        user = self.get_user(username)
+        usr_id = user[0]['id']
+        return usr_id
+
     def generate_jwt_token(self, username):
-        self.usr_id = self.get_id(username)
+        self.usr_id = self.get_usr_id(username)
         token = create_access_token(identity=self.usr_id)
         return token
 

@@ -1,28 +1,30 @@
 import datetime
-from werkzeug.security import generate_password_hash
-from flask import jsonify, request, make_response
-from flask_restful import Api, Resource
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_identity, create_access_token
-from flask_restful.reqparse import RequestParser
 import psycopg2
 from db_con import init_db
+from psycopg2.extras import RealDictCursor
+from flask_restful import Api, Resource
 from.incident_models import IncidentModel
+from flask_restful.reqparse import RequestParser
+from flask import jsonify, request, make_response
+from werkzeug.security import generate_password_hash
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_identity, create_access_token
 
 class Interventions(Resource):
     def __init__(self):
         self.db = IncidentModel()
 
         self.parser=RequestParser()
-        self.parser.add_argument('createdBy',type=str,required=True,help='Name is Required')
         self.parser.add_argument('type',type=str,required=True,help='Type is Required')
         self.parser.add_argument('location',type=str,required=True,help='Location is Required')
         self.parser.add_argument('comment',type=str, required=True,help='Comment is Required')
 
+    @jwt_required
     def post(self):
         
         self.parser.parse_args()
         data = request.get_json()
-        createdBy = data["createdBy"]
+
+        # createdBy = get_jwt_identity()
         type = data["type"]
         status = data["status"]
         comment = data["comment"]
@@ -41,7 +43,9 @@ class Interventions(Resource):
         if response is not None:
             return jsonify(response)
 
-        data=self.db.save_record(createdBy,type, comment, location, status)
+        user = get_jwt_identity()
+        createdby = user.get('id')
+        data=self.db.save_record(createdby,type, comment, location, status)
         data['createdOn']=data['createdOn'].strftime('%A %d. %B %Y')
         return {
             "status":201,
@@ -64,13 +68,11 @@ class Interventions(Resource):
 
 class DeleteRecord(Resource):
     def __init__(self):
-        self.db = IncidentModel
+        self.db = IncidentModel()
 
-    def delete(self,id):
+    def delete(self, id):
         self.db.delete_record(id)
-        return {
-    "status": 200, 
-    "data": {"id":id, "message": "Intervention record has been deleted"}}, 200
+        return {"status": 200, "data": {"id":id, "message": "Intervention record has been deleted"}}, 200
 
 class Specific(Resource):
     def __init__(self):
@@ -78,6 +80,9 @@ class Specific(Resource):
 
     def get(self, id):
         data = self.db.get_specific(id)
+        if not data:
+            return {
+                "message":"Record doesn't exist,Please enter a valid ID"}
         data['createdon']=data['createdon'].strftime('%A %d. %B %Y')
         return {
             "status":200,
@@ -94,6 +99,7 @@ class Updatecomment(Resource):
             return {
                 "message":"Please enter a valid ID"
             }
+        
         data = request.get_json()
         comment = data['comment']
         if comment is None or comment is "":

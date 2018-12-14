@@ -1,5 +1,6 @@
+import re
 import datetime
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import jsonify, request, make_response
 from flask_restful import Api, Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_identity, create_access_token
@@ -13,27 +14,28 @@ class UserRegistration(Resource):
         self.db = UserModel()
 
     def post(self):
+        
         data = request.get_json(silent=True)
         username = data["username"]
         email = data["email"]
         firstname = data["firstname"]
         lastname = data['lastname']
         phonenumber = data["phonenumber"]
-        password = data["password"]
+        password =generate_password_hash(data["password"])
         repeat_password = data["repeat_password"]
 
         response = None
         if username.isspace():
                 response = {"message": "Enter the username"}
-        if password.isspace() or len(password.strip()) < 10:
+        if password.isspace() or len(password) >=4 and password.isalnum():
             response = {"message": "Enter a valid password"}
-        if firstname.isspace():
+        if firstname.isspace() or firstname == "":
             response = {"message": "Enter the first name"}
-        if lastname.isspace():
+        if lastname.isspace() or lastname == "":
             response = {"message": "Enter the last name"}
-        if email.isspace():
+        if email.isspace() or email == "":
             response = {"message": "Enter a valid email"}
-
+            
         if response is not None:
             return jsonify(response)
 
@@ -48,7 +50,7 @@ class UserRegistration(Resource):
             return jsonify({
                 "message": "email exists"
             })
-        if password != repeat_password:
+        if not check_password_hash(password, repeat_password):
             return jsonify({
                 "message": "password's don't match"
             })
@@ -104,27 +106,28 @@ class UserLogin(Resource):
         data = request.get_json()
         username = data["username"]
         password = data["password"]
+        username = request.json.get('username')
+
 
         if username.isspace() or password.isspace():
             return jsonify({
-                "message": "Please, enter all the credentials"
+                "message": "Wrong Credentials"
             })
-
-        if password.isspace() or password is None:
-            return jsonify({
-                "message": "Please enter a valid password"
-            })
-
+        
         user = self.db.get_user(username)
         if not user:
             return jsonify({
-                "message": "We do not have an account with those details"
+                "message": "No account with such credentials"
             })
-        
-        token = create_access_token(identity=user)
-
+        if not self.db.validate_password(username,password):
+            return jsonify({
+            "message": "Please, enter all the credentials",
+            "status":401
+            })
+        token = create_access_token(identity=user[0])
         return jsonify({
-            "message": "Successfully,logged in now",
+            "message": username + " you are successfully logged in now",
             "token":token,
             "status":200
         })
+    

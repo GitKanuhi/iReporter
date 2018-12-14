@@ -14,7 +14,7 @@ class IncidentModel():
         payload ={
 
             'createdOn':datetime.utcnow(),
-            'createdBy':'createdBy',
+            'createdBy':createdBy,
             'type':type,
             'status':"draft" if status is None else status,
             'comment':comment,
@@ -38,7 +38,7 @@ class IncidentModel():
 
     def delete_record(self,id):
         """Deleting a specific intervention record"""
-        self.curr.execute("DELETE FROM incidences WHERE id = %s", (id,))   
+        self.curr.execute("""DELETE FROM incidences WHERE id = %s""", (id,))   
         self.db.commit()
 
     def update_comment(self, comment, id):
