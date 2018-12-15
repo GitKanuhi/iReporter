@@ -1,19 +1,22 @@
 import re
 import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask import jsonify, request, make_response
-from flask_restful import Api, Resource
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_identity, create_access_token
-from flask_restful.reqparse import RequestParser
 import psycopg2
 from db_con import init_db
 from.user_models import UserModel
+from flask_restful import Api, Resource
+from flask_restful.reqparse import RequestParser
+from flask import jsonify, request, make_response
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_identity, create_access_token
+
 
 class UserRegistration(Resource):
+
     def __init__(self):
         self.db = UserModel()
 
     def post(self):
+        """ Register a user to the system"""
         
         data = request.get_json(silent=True)
         username = data["username"]
@@ -44,23 +47,73 @@ class UserRegistration(Resource):
 
         if usrname:
             return jsonify({
-                "message": "username exists"
+                "message": "This username exists, try a different username",
+                "status":400
             })
         if confirm_mail:
             return jsonify({
-                "message": "email exists"
+                "message": "The email exists, try a different email",
+                "status":400
             })
         if not check_password_hash(password, repeat_password):
             return jsonify({
-                "message": "password's don't match"
+                "message": "The passwords entered don't match",
+                "status":401
             })
 
-        data=self.db.save(firstname, lastname, email,
-                     phonenumber, username, password)
+        data=self.db.save(username, email, firstname, lastname,phonenumber,password)
         return jsonify({
-            "message": "user records successfully saved",
+            "message": "Your have successfully been registered",
             "data":data,
             "status":201
+        })
+
+
+class UserLogin(Resource):
+    def __init__(self):
+        self.db = UserModel()
+
+        self.parser=RequestParser()
+        self.parser.add_argument('username',type=str,required=True,help='username is Required')
+        self.parser.add_argument('password',type=str,required=True,help='password is Required')
+    
+    def post(self):
+        """ Log in a user to the system """
+
+        self.parser.parse_args()
+        data = request.get_json()
+        username = data["username"]
+        password = data["password"]
+        username = request.json.get('username')
+
+
+        if username.isspace() or password.isspace():
+            return jsonify({
+                "message": "Whitespace fields not allowed, please enter details again",
+                "status":400
+            })
+        if username == "" or password == "":
+            return jsonify({
+                "message": "Empty fields not allowed, please enter details again",
+                "status":400
+            })
+        
+        user = self.db.get_user(username)
+        if not user:
+            return jsonify({
+                "message": "Username Not Found, try again",
+                "status":404
+            })
+        if not self.db.validate_password(username,password):
+            return jsonify({
+            "message": "Invalid Password, try again",
+            "status":401
+            })
+        token = create_access_token(identity=user[0])
+        return jsonify({
+            "message": username + " you are successfully logged in now",
+            "token":token,
+            "status":200
         })
 
 class AllUsers(Resource):
@@ -69,8 +122,8 @@ class AllUsers(Resource):
         self.db = UserModel()
 
     def get(self):
+        """ Fetching all users """
         output = self.db.get_all()
-        
         return make_response(jsonify(
             {
                 "message": "user records were successfully returned",
@@ -83,6 +136,7 @@ class SingleUser(Resource):
     def __init__(self):
         self.db = UserModel()
     def get(self,id):
+        """ Fetching a single user """
         userdata = self.db.get_one(id)
         return make_response(jsonify(
             {
@@ -91,43 +145,3 @@ class SingleUser(Resource):
                 "status":200
             }
         ))
-
-class UserLogin(Resource):
-    def __init__(self):
-        self.db = UserModel()
-
-        self.parser=RequestParser()
-        self.parser.add_argument('username',type=str,required=True,help='username is Required')
-        self.parser.add_argument('password',type=str,required=True,help='password is Required')
-    
-    def post(self):
-
-        self.parser.parse_args()
-        data = request.get_json()
-        username = data["username"]
-        password = data["password"]
-        username = request.json.get('username')
-
-
-        if username.isspace() or password.isspace():
-            return jsonify({
-                "message": "Wrong Credentials"
-            })
-        
-        user = self.db.get_user(username)
-        if not user:
-            return jsonify({
-                "message": "No account with such credentials"
-            })
-        if not self.db.validate_password(username,password):
-            return jsonify({
-            "message": "Please, enter all the credentials",
-            "status":401
-            })
-        token = create_access_token(identity=user[0])
-        return jsonify({
-            "message": username + " you are successfully logged in now",
-            "token":token,
-            "status":200
-        })
-    
