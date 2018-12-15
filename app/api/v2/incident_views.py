@@ -24,7 +24,6 @@ class Interventions(Resource):
         self.parser.parse_args()
         data = request.get_json()
 
-        # createdBy = get_jwt_identity()
         type = data["type"]
         status = data["status"]
         comment = data["comment"]
@@ -57,7 +56,8 @@ class Interventions(Resource):
         data = self.db.get_all_records()
         if data == []:
             return {
-                "message": "No records found"
+                "message": "No records found",
+                "status":404
             }, 404
         else:
             return jsonify(
@@ -72,7 +72,7 @@ class DeleteRecord(Resource):
 
     def delete(self, id):
         self.db.delete_record(id)
-        return {"status": 200, "data": {"id":id, "message": "Intervention record has been deleted"}}, 200
+        return {"status": 200,"data": {"id":id, "message": "Intervention record has been deleted"}}, 200
 
 class Specific(Resource):
     def __init__(self):
@@ -97,7 +97,8 @@ class Updatecomment(Resource):
         output=self.db.get_specific(id)
         if not output:
             return {
-                "message":"Please enter a valid ID"
+                "message":"Please enter a valid ID",
+                "status":400
             }
         
         data = request.get_json()
@@ -123,7 +124,8 @@ class UpdateLocation(Resource):
         output=self.db.get_specific(id)
         if not output:
             return {
-                "message":"Please enter a valid ID"
+                "message":"Please enter a valid ID",
+                "status":400
             }
         data = request.get_json()
         location = data['location']
