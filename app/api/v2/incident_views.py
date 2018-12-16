@@ -4,6 +4,7 @@ from db_con import init_db
 from psycopg2.extras import RealDictCursor
 from flask_restful import Api, Resource
 from.incident_models import IncidentModel
+from.user_models import UserModel
 from flask_restful.reqparse import RequestParser
 from flask import jsonify, request, make_response
 from werkzeug.security import generate_password_hash
@@ -54,25 +55,37 @@ class Interventions(Resource):
 
     @jwt_required
     def get(self):
-        data = self.db.get_all_records()
-        if data == []:
+        data = self.db.fetch_records()
+        data = self.db.get_all_records(data)
+        if not data:
             return {
                 "message": "No records found",
                 "status":404
             }, 404
-        else:
-            return jsonify(
-                {
-                    "message": "All records are successfully returned",
-                    "data": data,
-                    "id":id
-                }, 200)
+
+        return {
+            "message": "All records are successfully returned",
+            "data": data
+            }
 
 class DeleteRecord(Resource):
     def __init__(self):
         self.db = IncidentModel()
     @jwt_required
     def delete(self, id):
+        user_id = get_jwt_identity().get('id')
+        record=self.db.get_specific(id)
+        if not record:
+            return {
+                "message":"Record not Found",
+                "status":404
+                }
+        createdby = record["createdby"]
+        if user_id != createdby:
+            return {
+                "message": "Can not edit another users' record",
+                "status":400
+            }
         self.db.delete_record(id)
         return {"status": 200,
         "data": {
@@ -99,6 +112,7 @@ class Updatecomment(Resource):
         self.db = IncidentModel()
     @jwt_required
     def patch(self,id):
+        user_id = get_jwt_identity().get('id')
         output=self.db.get_specific(id)
         if not output:
             return {
@@ -112,6 +126,12 @@ class Updatecomment(Resource):
             return {
                 "message": "missing data, try again"
                 }, 400
+        createdby = output["createdby"]
+        if user_id != createdby:
+            return {
+                "message": "Can not edit another users' record",
+                "status":400
+            }
         self.db.update_comment(comment,id)
         output=self.db.get_specific(id)
         output['createdon']=output['createdon'].strftime('%A %d. %B %Y')
@@ -126,6 +146,7 @@ class UpdateLocation(Resource):
         self.db =IncidentModel()
     @jwt_required
     def patch(self,id):
+        user_id = get_jwt_identity().get('id')
         output=self.db.get_specific(id)
         if not output:
             return {
@@ -138,6 +159,12 @@ class UpdateLocation(Resource):
             return {
                 "message": "missing data, try again"
                 }, 400
+        createdby = output["createdby"]
+        if user_id != createdby:
+            return {
+                "message": "Can not edit another users' record",
+                "status":400
+            }
         self.db.update_location(location, id)
         output=self.db.get_specific(id)
         output['createdon']=output['createdon'].strftime('%A %d. %B %Y')
@@ -145,3 +172,35 @@ class UpdateLocation(Resource):
             "status": 200, 
             "data":
                [{ "data":output, "message": "Updated record’s location"}]}, 200
+
+class AdminRole(Resource):
+    def __init__(self):
+        self.db = IncidentModel()
+        self.db2 = UserModel()
+   
+    @jwt_required
+    def patch (self,id):
+        output = self.db.get_specific(id)
+        userId = get_jwt_identity().get('id') 
+        data = self.db2.isadmin(int(userId))
+        if not data:
+            return {
+                "message": "You are not an admin"
+            }
+        if not output:
+            return {
+                "message":"Enter a valid record ID",
+                "status":400
+            }
+        data = request.get_json()
+        status = data['status']
+        self.db.update_status(status,id)
+        output = self.db.get_specific(id)
+        output['createdon']=output['createdon'].strftime('%A %d. %B %Y')
+        return jsonify({
+            "status":200,
+            "data":[{"id": id, 
+            "message": "Updated intervention record status"}]
+        }, 200)
+
+

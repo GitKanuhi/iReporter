@@ -7,6 +7,12 @@ install:
  - pip install -r requirements.txt 
  - pip install coveralls codecov
 
+services:
+ - postgresql
+
+addons:
+ - postgres: "9.5"
+
 script:
  - pytest --cov-report=term-missing --cov=app
  

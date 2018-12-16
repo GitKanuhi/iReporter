@@ -12,7 +12,7 @@ class UserModel():
         self.db = init_db()
         self.curr = self.db.cursor(cursor_factory=RealDictCursor)
 
-    def save(self,firstname,lastname,email,phonenumber,username,password):
+    def save(self,firstname,lastname,email,phonenumber,username,password,isAdmin):
         """ saving user details in the database """
         payload = {
             'firstname':firstname,
@@ -21,7 +21,7 @@ class UserModel():
             'phonenumber':phonenumber,
             'username':username,
             'password':password,
-            'isAdmin':False
+            'isAdmin':isAdmin
         }
 
         query = """INSERT INTO users(firstname,lastname,email,phonenumber,username,password, isAdmin) VALUES
@@ -85,3 +85,8 @@ class UserModel():
     def login(self, username):
         token = self.generate_jwt_token(username)
         return token
+
+    def isadmin(self,id):
+         self.curr.execute("""SELECT * FROM users WHERE  id = %s""", (id,))
+         user = self.curr.fetchall()
+         return user

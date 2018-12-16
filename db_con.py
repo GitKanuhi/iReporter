@@ -34,7 +34,7 @@ def tables():
         username VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
         registered timestamp with time zone DEFAULT('now'::text)::date NOT NULL,
-        isAdmin BOOLEAN NOT NULL
+        isAdmin BOOLEAN DEFAULT FALSE
         )"""
     
     incidences = """CREATE TABLE IF NOT EXISTS incidences (

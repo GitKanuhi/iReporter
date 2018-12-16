@@ -9,15 +9,15 @@ class TestModels(unittest.TestCase):
        
 
         self.incident={
-   "status":"draft",
-   "type":"redflag",
-   "createdBy":"Edward G. Kanuhi", 
-   "location":"23e,40s",
-   "image":"picture",
-   "videos":"videos",
-   "comment":"Today is the presentation day",
-   "incidentId": 4
-}
+                    "status":"draft",
+                    "type":"redflag",
+                    "createdBy":"Edward G. Kanuhi", 
+                    "location":"23e,40s",
+                    "image":"picture",
+                    "videos":"videos",
+                    "comment":"Today is the presentation day",
+                    "incidentId": 4
+                    }
     
     def test_create_redflag(self):
         response=self.client.post('/api/v1/red-flags',data=json.dumps(self.incident),content_type='application/json')
@@ -73,10 +73,5 @@ class TestModels(unittest.TestCase):
         print(result)
         self.assertEqual(response.status_code,201)
 
-
 if __name__ == "__main__":
     unittest.main()
- 
-
-
-       

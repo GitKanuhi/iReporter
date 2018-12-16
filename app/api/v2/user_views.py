@@ -9,9 +9,7 @@ from flask import jsonify, request, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_identity, create_access_token
 
-
 class UserRegistration(Resource):
-
     def __init__(self):
         self.db = UserModel()
 
@@ -19,14 +17,15 @@ class UserRegistration(Resource):
         """ Register a user to the system"""
         
         data = request.get_json(silent=True)
-        username = data["username"]
-        email = data["email"]
         firstname = data["firstname"]
-        lastname = data['lastname']
+        lastname = data["lastname"]
+        email = data["email"]
         phonenumber = data["phonenumber"]
+        username = data["username"]
+        isAdmin = data["isAdmin"]
         password =generate_password_hash(data["password"])
         repeat_password = data["repeat_password"]
-
+       
         response = None
         if not username.strip():
                 response = {"message": "Enter the username"}
@@ -63,13 +62,14 @@ class UserRegistration(Resource):
                 "status":401
             })
 
-        data=self.db.save(username, email, firstname, lastname,phonenumber,password)
+        data=self.db.save(firstname,lastname,email,phonenumber,username,password, isAdmin)
+        del data["password"]
         return jsonify({
             "message": "Your have successfully been registered",
             "data":data,
+            "id":id,
             "status":201
         })
-
 
 class UserLogin(Resource):
     def __init__(self):
@@ -118,7 +118,6 @@ class UserLogin(Resource):
                 }],
             "message":"You are successfully logged in now"
         })
-
 
 class SingleUser(Resource):
     def __init__(self):
