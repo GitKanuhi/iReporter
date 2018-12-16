@@ -87,7 +87,6 @@ class UserLogin(Resource):
         username = data["username"]
         password = data["password"]
         username = request.json.get('username')
-
         username = username.strip()
         password = password.strip()
 
