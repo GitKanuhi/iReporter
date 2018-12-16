@@ -24,8 +24,10 @@ class UserModel():
             'isAdmin':isAdmin
         }
 
-        query = """INSERT INTO users(firstname,lastname,email,phonenumber,username,password, isAdmin) VALUES
-        (%(firstname)s,%(lastname)s,%(email)s,%(phonenumber)s,%(username)s,%(password)s,%(isAdmin)s) RETURNING users.*"""
+        query = """INSERT INTO users(firstname,lastname,email,phonenumber,
+                                    username,password, isAdmin) VALUES(%(firstname)s,
+                                    %(lastname)s,%(email)s,%(phonenumber)s,%(username)s,
+                                    %(password)s,%(isAdmin)s) RETURNING users.*"""
         self.curr.execute(query,payload)
         self.db.commit()
 
@@ -33,7 +35,8 @@ class UserModel():
 
     def get_one(self,id):
         """ fetching one from the db """
-        self.curr.execute("""SELECT firstname,lastname,email,phonenumber,username, isAdmin FROM users WHERE id = %s""", (id,))
+        self.curr.execute("""SELECT firstname,lastname,email,phonenumber,username, 
+                            isAdmin FROM users WHERE id = %s""", (id,))
         user_record = self.curr.fetchone()
         return user_record
 

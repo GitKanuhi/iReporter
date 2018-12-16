@@ -24,22 +24,23 @@ class Interventions(Resource):
         
         self.parser.parse_args()
         data = request.get_json()
-
         type = data["type"]
         status = data["status"]
         comment = data["comment"]
         location = data["location"]
 
         response = None
-        if type.isspace() or type == "":
+        if not type.strip():
             response = {
-                "message": "Field cannot be empty."}
-        if comment.isspace() or comment == "":
+                "message": "Please provide a valid type.",
+                "status":400}
+        if not comment.strip():
             response = {
-                "message": "Field cannot be empty"}
-        if location.isspace() or location == "":
+                "message": "Please provide a valid comment.",
+                "status":400}
+        if not location.strip():
             response = {
-                "message": "Field cannot be empty"}
+                "message": "Please provide a valid location"},400
         if response is not None:
             return jsonify(response)
 
@@ -59,13 +60,14 @@ class Interventions(Resource):
         data = self.db.get_all_records(data)
         if not data:
             return {
-                "message": "No records found",
+                "message": "No records Found",
                 "status":404
             }, 404
 
         return {
             "message": "All records are successfully returned",
-            "data": data
+            "data": data,
+            "status":200
             }
 
 class DeleteRecord(Resource):
@@ -83,7 +85,7 @@ class DeleteRecord(Resource):
         createdby = record["createdby"]
         if user_id != createdby:
             return {
-                "message": "Can not edit another users' record",
+                "message": "Access Denied! No deleting another user record",
                 "status":400
             }
         self.db.delete_record(id)
@@ -116,7 +118,7 @@ class Updatecomment(Resource):
         output=self.db.get_specific(id)
         if not output:
             return {
-                "message":"Please enter a valid ID",
+                "message":"Please provide a valid ID",
                 "status":400
             }
         
@@ -124,12 +126,13 @@ class Updatecomment(Resource):
         comment = data['comment']
         if comment is None or comment is "":
             return {
-                "message": "missing data, try again"
-                }, 400
+                "message": "missing data, try again",
+                "status":400
+                }
         createdby = output["createdby"]
         if user_id != createdby:
             return {
-                "message": "Can not edit another users' record",
+                "message": "Access Denied! No editing another user record",
                 "status":400
             }
         self.db.update_comment(comment,id)
@@ -150,19 +153,19 @@ class UpdateLocation(Resource):
         output=self.db.get_specific(id)
         if not output:
             return {
-                "message":"Please enter a valid ID",
+                "message":"Please provide a valid ID",
                 "status":400
             }
         data = request.get_json()
         location = data['location']
         if location is None or location is "":
             return {
-                "message": "missing data, try again"
+                "message": "missing data, please try again"
                 }, 400
         createdby = output["createdby"]
         if user_id != createdby:
             return {
-                "message": "Can not edit another users' record",
+                "message": "No editing another user record",
                 "status":400
             }
         self.db.update_location(location, id)
@@ -177,7 +180,8 @@ class AdminRole(Resource):
     def __init__(self):
         self.db = IncidentModel()
         self.db2 = UserModel()
-   
+        
+        """ admin patches/edits a record status"""
     @jwt_required
     def patch (self,id):
         output = self.db.get_specific(id)
@@ -185,11 +189,12 @@ class AdminRole(Resource):
         data = self.db2.isadmin(int(userId))
         if not data:
             return {
-                "message": "You are not an admin"
+                "message": "Access denied! You are not an Admin",
+                "status":400
             }
         if not output:
             return {
-                "message":"Enter a valid record ID",
+                "message":"Provide a valid record ID",
                 "status":400
             }
         data = request.get_json()
