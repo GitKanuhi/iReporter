@@ -28,17 +28,19 @@ class UserRegistration(Resource):
         repeat_password = data["repeat_password"]
 
         response = None
-        if username.isspace():
+        if not username.strip():
                 response = {"message": "Enter the username"}
         if password.isspace() or len(password) >=4 and password.isalnum():
             response = {"message": "Enter a valid password"}
-        if firstname.isspace() or firstname == "":
+        if not firstname.strip():
             response = {"message": "Enter the first name"}
-        if lastname.isspace() or lastname == "":
+        if not lastname.strip():
             response = {"message": "Enter the last name"}
-        if email.isspace() or email == "":
-            response = {"message": "Enter a valid email"}
-            
+        if not email.strip():
+            response = {"message": "Invalid email format"}
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            response = {"message": "Invalid email format"}
+
         if response is not None:
             return jsonify(response)
 
@@ -86,18 +88,15 @@ class UserLogin(Resource):
         password = data["password"]
         username = request.json.get('username')
 
+        username = username.strip()
+        password = password.strip()
 
-        if username.isspace() or password.isspace():
-            return jsonify({
-                "message": "Whitespace fields not allowed, please enter details again",
-                "status":400
-            })
-        if username == "" or password == "":
+        if not username or not password:
             return jsonify({
                 "message": "Empty fields not allowed, please enter details again",
                 "status":400
             })
-        
+
         user = self.db.get_user(username)
         if not user:
             return jsonify({
@@ -109,28 +108,18 @@ class UserLogin(Resource):
             "message": "Invalid Password, try again",
             "status":401
             })
-        token = create_access_token(identity=user[0])
+        user = user[0]
+        token = create_access_token(identity=user)
+        del user['password']
         return jsonify({
-            "message": username + " you are successfully logged in now",
-            "token":token,
-            "status":200
+            "status":200,
+            "data":[{
+                "token":token,
+                "user":username
+                }],
+            "message":"You are successfully logged in now"
         })
 
-class AllUsers(Resource):
-
-    def __init__(self):
-        self.db = UserModel()
-
-    def get(self):
-        """ Fetching all users """
-        output = self.db.get_all()
-        return make_response(jsonify(
-            {
-                "message": "user records were successfully returned",
-                "data": output,
-                "status":200
-            }
-        ))
 
 class SingleUser(Resource):
     def __init__(self):
@@ -142,6 +131,7 @@ class SingleUser(Resource):
             {
                 "message": "user record returned successfully",
                 "data": userdata,
+                "id":id,
                 "status":200
             }
         ))
