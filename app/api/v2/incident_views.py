@@ -7,7 +7,7 @@ from.incident_models import IncidentModel
 from flask_restful.reqparse import RequestParser
 from flask import jsonify, request, make_response
 from werkzeug.security import generate_password_hash
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_identity, create_access_token
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt_identity
 
 class Interventions(Resource):
     def __init__(self):
@@ -52,6 +52,7 @@ class Interventions(Resource):
             "data":[data]
         }, 201
 
+    @jwt_required
     def get(self):
         data = self.db.get_all_records()
         if data == []:
@@ -63,21 +64,25 @@ class Interventions(Resource):
             return jsonify(
                 {
                     "message": "All records are successfully returned",
-                    "data": data
+                    "data": data,
+                    "id":id
                 }, 200)
 
 class DeleteRecord(Resource):
     def __init__(self):
         self.db = IncidentModel()
-
+    @jwt_required
     def delete(self, id):
         self.db.delete_record(id)
-        return {"status": 200,"data": {"id":id, "message": "Intervention record has been deleted"}}, 200
+        return {"status": 200,
+        "data": {
+            "id":id, 
+            "message": "Intervention record has been deleted"}}, 200
 
 class Specific(Resource):
     def __init__(self):
         self.db = IncidentModel()
-
+    @jwt_required
     def get(self, id):
         data = self.db.get_specific(id)
         if not data:
@@ -92,7 +97,7 @@ class Specific(Resource):
 class Updatecomment(Resource):
     def __init__(self):
         self.db = IncidentModel()
-
+    @jwt_required
     def patch(self,id):
         output=self.db.get_specific(id)
         if not output:
@@ -119,7 +124,7 @@ class UpdateLocation(Resource):
 
     def __init__(self):
         self.db =IncidentModel()
-
+    @jwt_required
     def patch(self,id):
         output=self.db.get_specific(id)
         if not output:

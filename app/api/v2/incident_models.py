@@ -1,10 +1,11 @@
 from db_con import init_db
-from werkzeug.security import generate_password_hash,check_password_hash
-from flask_jwt_extended import get_jwt_identity, create_access_token
+from datetime import datetime
 from flask_restful import request
 from psycopg2.extras import RealDictCursor
-from datetime import datetime
- 
+from flask_jwt_extended import get_jwt_identity, create_access_token
+from werkzeug.security import generate_password_hash,check_password_hash
+
+
 class IncidentModel():
     def __init__(self):
         self.db = init_db()

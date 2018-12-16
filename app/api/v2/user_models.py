@@ -1,9 +1,9 @@
-from db_con import init_db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_jwt_extended import get_jwt_identity, create_access_token
-from flask_restful import request
 from psycopg2.extras import RealDictCursor
+from flask_restful import request
 from datetime import datetime
+from db_con import init_db
 import re
 
 class UserModel():
@@ -31,12 +31,6 @@ class UserModel():
 
         return self.curr.fetchone()
 
-    def get_all(self):
-        """ fetching all from the db """
-        self.curr.execute("""SELECT firstname,lastname,email,phonenumber,username, isAdmin FROM users""")
-        user_records = self.curr.fetchall()
-        return user_records
-    
     def get_one(self,id):
         """ fetching one from the db """
         self.curr.execute("""SELECT firstname,lastname,email,phonenumber,username, isAdmin FROM users WHERE id = %s""", (id,))
