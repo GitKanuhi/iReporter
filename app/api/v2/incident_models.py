@@ -21,8 +21,10 @@ class IncidentModel():
             'location':location
         }
         query = """INSERT INTO incidences(createdOn, createdBy,type, status,comment, 
-                                            location)VALUES(%(createdOn)s, %(createdBy)s,%(type)s, 
-                                            %(status)s,%(comment)s, %(location)s) RETURNING incidences.*"""
+                                            location)VALUES(%(createdOn)s, 
+                                            %(createdBy)s,%(type)s, 
+                                            %(status)s,%(comment)s, 
+                                            %(location)s) RETURNING incidences.*"""
         self.curr.execute(query,payload)
         self.db.commit()
         return payload
