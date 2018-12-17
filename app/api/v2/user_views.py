@@ -116,7 +116,8 @@ class UserLogin(Resource):
                 "token":token,
                 "user":username
                 }],
-            "message":"You are successfully logged in now"
+            "message":"You are successfully logged in now",
+            "status":200
         })
 
 class SingleUser(Resource):

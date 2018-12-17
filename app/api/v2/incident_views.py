@@ -40,7 +40,7 @@ class Interventions(Resource):
                 "status":400}
         if not location.strip():
             response = {
-                "message": "Please provide a valid location"
+                "message": "Please provide a valid location",
                 "status":400}
         if response is not None:
             return jsonify(response)
